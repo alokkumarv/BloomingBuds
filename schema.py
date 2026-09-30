@@ -5,6 +5,15 @@ from pydantic import BaseModel,Field,EmailStr
 import uuid
 
 
+class LoginRequest(BaseModel):
+        Email : str = Field(EmailStr)
+        Password : str = Field(str)
+
+class LoginResponse(BaseModel):
+        ResponseStatus : int
+        ResponseMessage : str
+
+
 class CreateTenantRequest(BaseModel):
         name : str = Field(max_length=50)
         email : str = Field(EmailStr)

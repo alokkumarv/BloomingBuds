@@ -9,10 +9,7 @@ from sqlalchemy import String, Boolean, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Enum as SQLEnum
-
-class Base(DeclarativeBase):
-    pass
-
+from models.models import Base
 
 class User(Base):
     __tablename__ = "user"
@@ -29,7 +26,7 @@ class User(Base):
         unique=True
     )
 
-    PasswordHash: Mapped[str] = mapped_column(
+    Password: Mapped[str] = mapped_column(
         String(255),
         nullable=False
     )

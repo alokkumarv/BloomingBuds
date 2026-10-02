@@ -1,14 +1,23 @@
 from fastapi import FastAPI
-from routers import auth,user
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.security import HTTPBearer
+import logging
+
+from routers.authentication import auth as auth_router
+from routers.user import user as user_router
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
+
 bearer_scheme = HTTPBearer()
 
+app.include_router(auth_router)
+app.include_router(user_router)
 
-app.include_router(router=auth)
-app.include_router(router=user)
-
-
-if __name__ == "__main__":
-    pass
+logger.info("App started")

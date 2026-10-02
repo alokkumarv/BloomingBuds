@@ -4,7 +4,7 @@ from schemas.schema import CreateUserRequest
 from models.user import User
 from util.util import sqlalchemy_to_dict
 import logging
-
+import uuid
 from models.user import User
 
 
@@ -17,7 +17,7 @@ class UserService:
         try:
             user = User(
                 Email=new_user.email,
-                PasswordHash=new_user.password_hash,
+                Password=new_user.password_hash,
                 FirstName=new_user.first_name,
                 LastName=new_user.last_name,
                 Phone=new_user.phone,
@@ -36,6 +36,12 @@ class UserService:
             return user
         except Exception as ex:
             raise ValueError("Cannot get user in db",ex)
+
+    def delete_user(self,user_id :uuid.UUID):
+        try:
+            self.user_repository.delete_user_by_id(user_id)
+        except Exception as ex:
+            raise ValueError("Unable to delete user ")
         
 
 

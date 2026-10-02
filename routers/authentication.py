@@ -2,7 +2,7 @@ from fastapi import APIRouter,Depends,HTTPException
 from schemas.schema import LoginRequest,LoginTokenResponse
 import services.authetication as authservice
 from sqlalchemy.orm import Session
-from database import get_db
+from database.database import get_db
 auth = APIRouter(prefix='/auth',tags=["Authetication"])
 
 

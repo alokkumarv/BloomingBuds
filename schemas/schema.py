@@ -49,6 +49,6 @@ class GetUserResponse(BaseModel):
         email: str = Field(EmailStr)
         first_name: str = Field(max_length=40)
         last_name: str = Field(max_length=40)
-        phone: str = Field(max_length=13)
+        phone: str = Field()
         role: str | None = None
        

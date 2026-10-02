@@ -1,7 +1,6 @@
-import uuid
 from datetime import datetime
 from enum import Enum
-from pydantic import BaseModel,Field,EmailStr
+from pydantic import BaseModel,Field,EmailStr,ConfigDict
 import uuid
 
 
@@ -12,6 +11,11 @@ class LoginRequest(BaseModel):
 class LoginResponse(BaseModel):
         ResponseStatus : int
         ResponseMessage : str
+
+
+class LoginTokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "Bearer"
 
 
 class CreateTenantRequest(BaseModel):
@@ -32,7 +36,19 @@ class CreateUserRequest(BaseModel):
         first_name: str = Field(max_length=40)
         last_name: str = Field(max_length=40)
         phone: str = Field(max_length=13)
+        role: str | None = None
+
 
 class CreateUserResponse(BaseModel):
-        id: uuid.UUID 
-        email: str 
+        id: uuid.UUID
+        email: EmailStr
+        created_at: datetime
+
+class GetUserResponse(BaseModel):
+        id: uuid.UUID
+        email: str = Field(EmailStr)
+        first_name: str = Field(max_length=40)
+        last_name: str = Field(max_length=40)
+        phone: str = Field(max_length=13)
+        role: str | None = None
+       

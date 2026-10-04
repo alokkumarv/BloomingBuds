@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from repository.user import UserRepository
 from schemas.schema import CreateUserRequest
 from models.user import User
-from util.util import sqlalchemy_to_dict
+from util import sql_model_to_dict
 import logging
 import uuid
 from models.user import User
@@ -31,7 +31,7 @@ class UserService:
         try:
             user = self.user_repository.get_user_by_id(user_id)
             user_role = self.user_repository.get_user_role(user_id=user.id)
-            user = sqlalchemy_to_dict(user)
+            user = sql_model_to_dict(user)
             user["Role"] = user_role
             return user
         except Exception as ex:

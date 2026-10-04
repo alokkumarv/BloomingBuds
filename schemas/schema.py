@@ -20,7 +20,7 @@ class LoginTokenResponse(BaseModel):
 
 class CreateTenantRequest(BaseModel):
         name : str = Field(max_length=50)
-        email : str = Field(EmailStr)
+        email: EmailStr
         phone  : str = Field(max_length=13)
         address : str = Field(max_length=100)
         country : str = Field(max_length=50)

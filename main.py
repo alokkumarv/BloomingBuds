@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from fastapi.security import HTTPBearer
 import logging
 
-from routers.authentication import auth as auth_router
-from routers.user import user as user_router
+
+from routers import tenant_router,auth_router,user_router
 
 
 logging.basicConfig(
@@ -19,5 +19,7 @@ bearer_scheme = HTTPBearer()
 
 app.include_router(auth_router)
 app.include_router(user_router)
+app.include_router(tenant_router)
+
 
 logger.info("App started")

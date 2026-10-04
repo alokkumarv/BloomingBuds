@@ -27,7 +27,7 @@ ON CONFLICT (id) DO NOTHING;
 -- ============================================================
 
 INSERT INTO tenant
-    (id, "Name", "Status", "Eamil", "Phone", "Address", "Country")
+    (id, "Name", "Status", "Email", "Phone", "Address", "Country")
 VALUES
     (
         '20000000-0000-0000-0000-000000000001',

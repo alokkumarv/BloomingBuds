@@ -1,5 +1,5 @@
 from models import User,UserTenant,Role
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import SQLAlchemyError,MultipleResultsFound,NoResultFound
 from sqlalchemy import select,delete
 from sqlalchemy.orm import Session
 import uuid
@@ -13,32 +13,42 @@ class UserRepository:
         pass
 
     def get_by_id(self, user_id: uuid.UUID) -> User:
-        stmt = select(User).where(User.id -- user_id)
-        user = self.db.scalar(stmt)
-        if user == None:
-            raise ValueError("User id not found in db")
-        return user
-       
+        try:
+            stmt = select(User).where(User.id == user_id)
+            user = self.db.execute(stmt).scalar_one()
+            if user == None:
+                raise ValueError("User id not found in db")
+            return user
+        except MultipleResultsFound as ex:
+            raise ValueError("Multiple user found id not found in db")
 
     def get_user_role(self,user_id: uuid.UUID) -> str:
-        stmt = select(UserTenant).where(UserTenant.user_id == user_id)
-        user_tenent = self.db.scalar(stmt)
-        if user_tenent == None:
-            raise ValueError("user in not present under any tenant")
-        role_id = user_tenent.role
-        stmt = select(Role).where(Role.id == role_id)
-        role = self.db.scalar(stmt)
-        if role == None:
-            raise ValueError("For current user role is not found")
-        return role.user_role
-
+        try:
+            stmt = select(UserTenant).where(UserTenant.user_id == user_id)
+            user_tenent = self.db.scalar(stmt)
+            if user_tenent == None:
+                raise ValueError("user in not present under any tenant")
+            role_id = user_tenent.role
+            stmt = select(Role).where(Role.id == role_id)
+            role = self.db.scalar(stmt)
+            if role == None:
+                raise ValueError("For current user role is not found")
+            return role.user_role
+        except Exception as ex:
+            raise ValueError("Role of user cannot be found ",ex)
+        
     def get_user_by_email(self, email: str) -> User:
-        stmt = select(User).where(User.Email == email)
-        user = self.db.scalar(stmt)
-        if user ==None:
-            raise ValueError("User Not found in Db")
-        return user
-
+        try:
+            stmt = select(User).where(User.Email == email)
+            user = self.db.execute(stmt).scalar_one()
+            if user ==None:
+                raise ValueError("User Not found in Db")
+            return user
+        except NoResultFound as ex:
+            raise ValueError("User Not found in Db ",ex)
+        except MultipleResultsFound as ex:
+            raise ValueError("Multiple user found in db ",ex)
+        
     def get_user_by_id(self,user_id : uuid.UUID)-> User:
         try:
             stmt = select(User).where(User.id == user_id)

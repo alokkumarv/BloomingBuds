@@ -31,7 +31,7 @@ class Tenant(Base):
         nullable=False
     )
 
-    Eamil: Mapped[str] = mapped_column(
+    Email: Mapped[str] = mapped_column(
         String(100),
         nullable=False
     )

@@ -1,3 +1,9 @@
+DROP TABLE "user";
+DROP TABLE "tenant";
+DROP TABLE "role";
+DROP TABLE "user_tenant";
+
+
 CREATE TABLE "user" (
     id UUID PRIMARY KEY,
     "Email" VARCHAR(100) NOT NULL UNIQUE,
@@ -16,7 +22,7 @@ CREATE TABLE tenant (
     id UUID PRIMARY KEY,
     "Name" VARCHAR(40) NOT NULL,
     "Status" BOOLEAN NOT NULL DEFAULT TRUE,
-    "Eamil" VARCHAR(100) NOT NULL,
+    "Email" VARCHAR(100) NOT NULL,
     "Phone" VARCHAR(40),
     "Address" VARCHAR(100),
     "Country" VARCHAR(40)

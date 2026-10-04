@@ -1,5 +1,5 @@
 from schemas.schema import  LoginRequest,LoginResponse
-from repository.user import UserRepository 
+from repository import UserRepository 
 from sqlalchemy.orm import Session 
 from .token import generate_token
 def login(login_req :LoginRequest, db: Session):

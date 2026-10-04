@@ -16,7 +16,7 @@ class TenantRepository:
         logger.info("Get tenant by is called ")
         try:
             stmt = select(Tenant).where(Tenant.id == tenant_id)
-            tenant = util.sqlalchemy_to_dict(self.db.execute(stmt).scalar_one())
+            tenant = util.sql_model_to_dict(self.db.execute(stmt).scalar_one())
             return tenant
         except MultipleResultsFound as ex:
             logger.info("Exception occured : {}".format(ex))

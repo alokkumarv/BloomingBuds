@@ -30,7 +30,10 @@ def create_new_tenant(tenant : CreateTenantRequest,db :Session =  Depends(get_db
 def get_tenant_by_id(id : uuid.UUID , db:  Session =Depends(get_db)):
     try:
         logger.info("get tenant api called for : {}".format(id))
-        pass
+        tenant_Service = TenantService(db=db)
+        tenant = tenant_Service.get_tenant_by_id(id)
+        return tenant
+        
     except Exception as ex:
         raise HTTPException(status_code=404 ,detail="Tenant not found ")
 

@@ -1,11 +1,23 @@
-DROP TABLE "user";
-DROP TABLE "tenant";
-DROP TABLE "role";
-DROP TABLE "user_tenant";
+-- DROP TABLE "user_profile";
+-- DROP TABLE "tenant";
+-- DROP TABLE "role";
+-- DROP TABLE "user_tenant";
 
 
-CREATE TABLE "user" (
-    id UUID PRIMARY KEY,
+CREATE EXTENSION if not exists pgcrypto;
+
+
+CREATE TYPE roles as ENUM (
+    'super_admin'
+    'tenant_admin'
+    'tenant_manager'
+    'tenant_staff'
+    'customer'
+); 
+
+
+CREATE TABLE user_profile (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(), 
     "Email" VARCHAR(100) NOT NULL UNIQUE,
     "Password" VARCHAR(255) NOT NULL,
     "FirstName" VARCHAR(40) NOT NULL,
@@ -18,8 +30,10 @@ CREATE TABLE "user" (
     "LastLoginAt" TIMESTAMP
 );
 
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 CREATE TABLE tenant (
-    id UUID PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     "Name" VARCHAR(40) NOT NULL,
     "Status" BOOLEAN NOT NULL DEFAULT TRUE,
     "Email" VARCHAR(100) NOT NULL,
@@ -29,8 +43,8 @@ CREATE TABLE tenant (
 );
 
 CREATE TABLE role (
-    id UUID PRIMARY KEY,
-    user_role VARCHAR(200) NOT NULL UNIQUE
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_role roles NOT NULL UNIQUE
 );
 
 CREATE TABLE user_tenant (
@@ -40,7 +54,7 @@ CREATE TABLE user_tenant (
 
     PRIMARY KEY (user_id, tenant_id, role),
 
-    FOREIGN KEY (user_id) REFERENCES "user"(id),
-    FOREIGN KEY (tenant_id) REFERENCES tenant(id),
+    FOREIGN KEY (user_id) REFERENCES user_profile(id) ON DELETE CASCADE,
+    FOREIGN KEY (tenant_id) REFERENCES tenant(id) ON DELETE CASCADE,
     FOREIGN KEY (role) REFERENCES role(id)
 );
